@@ -15,10 +15,13 @@ from sklearn.model_selection import train_test_split
 import torch.nn as nn
 import torch
 from torch.utils.data import DataLoader, Dataset 
-import torchvision.transforms as transforms
 import matplotlib.pyplot as plt
 
-# %% Show an image
+# %% Check for gpu
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(f'Using {device}')
+
+# %% Show an image function
 def imshow(img):
     plt.imshow(img, cmap='gray')
     plt.show()
@@ -36,8 +39,8 @@ for i in random_range:
 # %% Dataset class
 class MNISTDataset(Dataset):
     def __init__(self, X, y):
-        self.X = torch.tensor(X, dtype=torch.float32).to('cuda')
-        self.y = torch.tensor(y, dtype=torch.int64).to('cuda')
+        self.X = torch.tensor(X, dtype=torch.float32).to(device)
+        self.y = torch.tensor(y, dtype=torch.int64).to(device)
 
     def __len__(self):
         return len(self.X)
@@ -81,7 +84,7 @@ class NeuralNetwork(nn.Module):
         return X
 #%% Load model
 model = NeuralNetwork()
-model.to('cuda')
+model.to(device)
 #model.load_state_dict(torch.load('model.pth'))
 #model.eval()
 
@@ -109,12 +112,12 @@ torch.save(model.state_dict(), 'model.pth')
 # %% Accuracy evaluation on dev set
 from sklearn.metrics import accuracy_score
 with torch.no_grad():
-    y_pred = model(torch.tensor(X_dev, dtype=torch.float32).unsqueeze(1).to('cuda')).argmax(dim=1).cpu().numpy()
+    y_pred = model(torch.tensor(X_dev, dtype=torch.float32).unsqueeze(1).to(device)).argmax(dim=1).cpu().numpy()
     print(f'Accuracy: {accuracy_score(y_dev, y_pred)}')
 
 # %% Accuracy evaluation on test set
 with torch.no_grad():
-    y_pred = model(torch.tensor(test_set, dtype=torch.float32).unsqueeze(1).to('cuda')).argmax(dim=1).cpu().numpy()
+    y_pred = model(torch.tensor(test_set, dtype=torch.float32).unsqueeze(1).to(device)).argmax(dim=1).cpu().numpy()
     print(f'Accuracy: {accuracy_score(test_labels, y_pred)}')
 
 # %% Plot the losses
@@ -122,17 +125,5 @@ x = [i*100 for i in range(len(losses))]
 plt.xlabel('Epoch')
 plt.ylabel('Loss')
 plt.plot(x, losses)
-# %% Guess one image
-import cv2
-import numpy as np
-image = cv2.imread('test.png')
-image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-image = cv2.resize(image, (28, 28))
-image = np.array(image, dtype=np.int64)
-image = torch.tensor(image, dtype=torch.float32)
-image = image.unsqueeze(0).unsqueeze(0).float()
-with torch.no_grad():
-    guess = np.argmax(model(image.to('cuda')).cpu().numpy())
-    print(guess)
-#
+
 # %% Done

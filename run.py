@@ -88,5 +88,3 @@ while True:
 
 cv2.destroyAllWindows()
 # %%
-#test = cv2.imread('test.png')
-# %%
