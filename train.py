@@ -53,8 +53,6 @@ X_train, X_dev, y_train, y_dev = train_test_split(train_set, train_labels, test_
 #train on whole set
 train_loader = DataLoader(MNISTDataset(train_set, train_labels)
                           , batch_size=64, shuffle=False,)
-test_loader = DataLoader(MNISTDataset(X_dev, y_dev)
-                         , batch_size=64, shuffle=False)
 # %% Network class
 class NeuralNetwork(nn.Module):
     def __init__(self):
@@ -137,4 +135,4 @@ with torch.no_grad():
     guess = np.argmax(model(image.to('cuda')).cpu().numpy())
     print(guess)
 #
-# %%
+# %% Done
