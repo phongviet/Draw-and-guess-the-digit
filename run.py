@@ -14,11 +14,12 @@ def draw_circle(event,x,y,flags,param):
  
     elif event == cv2.EVENT_MOUSEMOVE:
         if drawing == True:
-            cv2.rectangle(image,(x-5,y-5),(x+5,y+5),(255,255,255),-1)
- 
+            # cv2.rectangle(image,(x-5,y-5),(x+5,y+5),(255,255,255),-1)
+            cv2.circle(image, (x,y), 5, (255,255,255), -1)
     elif event == cv2.EVENT_LBUTTONUP:
         drawing = False
-        cv2.rectangle(image,(x-5,y-5),(x+5,y+5),(255,255,255),-1)
+        # cv2.rectangle(image,(x-5,y-5),(x+5,y+5),(255,255,255),-1)
+        cv2.circle(image, (x, y), 5, (255, 255, 255), -1)
     
     elif event == cv2.EVENT_RBUTTONDOWN: #Reset image
         image = np.array([0]*28*28*3*121, dtype=np.uint8).reshape(28*11,28*11,3)

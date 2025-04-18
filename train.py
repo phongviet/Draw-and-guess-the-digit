@@ -95,19 +95,19 @@ optimizer = torch.optim.SGD(model.parameters(), lr=0.001)
 losses = []
 
 #%% 1000 epochs with batch_size=64
-for epoch in range(1000):
+for epoch in range(100):
     for i, (X_batch, y_batch) in enumerate(train_loader):
         optimizer.zero_grad()
         y_pred = model(X_batch.unsqueeze(1).float())
         loss = loss_fn(y_pred, y_batch)
         loss.backward()
         optimizer.step()
-    if epoch % 100 == 0:
+    if epoch % 1 == 0:
         print(f'Epoch {epoch}, Loss: {loss.item()}')
         losses.append(loss.item())
 
 # %% Save the model
-torch.save(model.state_dict(), 'model.pth')
+# torch.save(model.state_dict(), 'model.pth')
 
 # %% Accuracy evaluation on dev set
 from sklearn.metrics import accuracy_score
