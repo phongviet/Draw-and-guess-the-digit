@@ -1,6 +1,8 @@
 # %% Initialize the drawing window
 import cv2
 import numpy as np
+import torch
+from torch import nn
 
 image = np.array([0]*28*28*3*121, dtype=np.uint8).reshape(28*11,28*11,3)
 
@@ -28,8 +30,6 @@ cv2.namedWindow('image')
 cv2.setMouseCallback('image', draw_circle)
 
 # %% Prepare trained model
-import torch
-from torch import nn
 
 class NeuralNetwork(nn.Module):
     def __init__(self):

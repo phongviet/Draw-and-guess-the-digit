@@ -1,6 +1,5 @@
 # %% Prepare data
 import torchvision.datasets as datasets
-import numpy as np
 
 mnist_trainset = datasets.MNIST(root='./data', train=True, 
                                 download=True, transform=None)
